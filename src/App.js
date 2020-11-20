@@ -1,13 +1,20 @@
 import { Component } from 'react'
 
 import './App.css';
+import TvShowsSection from './TvShowsSection';
 
 const TvShowsURL = "http://api.tvmaze.com/shows"
 
 class App extends Component {
 
   state = {
-    tvShows: []
+    tvShows: [],
+    isClicked: false
+  }
+
+  componentDidMount(){
+    this.getTvShows()
+
   }
   
   getTvShows = () => {
@@ -15,12 +22,19 @@ class App extends Component {
       .then(response => response.json())
       .then(tvShows => this.setState({ tvShows}))
   }
-  
+
+  handleClick = () => {
+    this.setState({isClicked: true})
+  }
+
   render(){
     return (
       <div className="App">
         <h1>Tv Shows !</h1>
-        <button onClick={this.getTvShows}>Get Shows</button>
+        { this.state.isClicked 
+        ? <TvShowsSection tvShows={this.state.tvShows} />
+        : <button onClick={this.handleClick}>Get Shows</button>
+        }
       </div>
     );
   }
